@@ -170,6 +170,26 @@
             .ntv-footer { flex-direction:column; align-items:center; text-align:center; padding:2rem 1.5rem; }
             .ntv-footer-links { justify-content:center; }
         }
+
+        /* Floating chat button */
+        .ntv-chat-button {
+            position: fixed;
+            right: 24px;
+            bottom: 24px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg,#27435a 0%, #0f2b4a 100%);
+            box-shadow: 0 12px 30px rgba(10,20,30,0.35);
+            z-index: 1400;
+            cursor: pointer;
+            transition: transform 160ms ease, box-shadow 160ms ease;
+        }
+        .ntv-chat-button img { width: 40px; height: 40px; display:block; }
+        .ntv-chat-button:hover { transform: translateY(-6px); box-shadow: 0 18px 40px rgba(10,20,30,0.45); }
     </style>
 
     @stack('styles')
@@ -258,4 +278,9 @@
 
 @stack('scripts')
 </body>
+<!-- Floating chat button -->
+<a href="{{ url('/contact') }}" class="ntv-chat-button" title="Nous écrire" aria-label="Ouvrir le chat">
+    <img src="{{ asset('images/chat-icon.svg') }}" alt="Chat">
+</a>
+</html>
 </html>
