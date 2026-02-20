@@ -9,9 +9,11 @@
        PAGE À PROPOS
     ══════════════════════════════════════════ */
     .apropos-page {
-        background: #040d0a;
+        /* Background image + dark overlay */
+        background: linear-gradient(rgba(2,7,6,0.72), rgba(2,7,6,0.72)), url('{{ asset("images/hero-ai.png") }}') center left / cover no-repeat;
         min-height: 100vh;
         overflow: hidden;
+        position: relative;
     }
 
     /* ── Fond décoratif commun ── */
@@ -396,6 +398,27 @@
         .big-number { display: none; }
         .apropos-hero-content { margin-left: 0; }
     }
+
+    /* Scroll top & bottom links */
+    .apropos-scroll-top {
+        position: fixed;
+        left: calc(50% + 360px);
+        bottom: 40px;
+        width: 44px; height: 44px; border-radius: 50%;
+        display: flex; align-items:center; justify-content:center;
+        background: rgba(0,0,0,0.45); color: #fff; border: 1px solid rgba(255,255,255,0.06);
+        z-index: 1400; cursor: pointer; backdrop-filter: blur(6px);
+    }
+    .apropos-scroll-top:hover { transform: translateY(-4px); }
+
+    .apropos-bottom-links { position: fixed; left: 20px; bottom: 18px; z-index:1300; display:flex; gap:18px; align-items:center; color:var(--text-muted); }
+    .apropos-bottom-links .bottom-left a { color: rgba(255,255,255,0.6); margin-right: 12px; font-size:0.85rem; text-decoration:none; }
+    .apropos-bottom-links .bottom-right a { color: rgba(255,255,255,0.6); margin-left: 8px; }
+
+    @media (max-width: 991px) {
+        .apropos-scroll-top { left: auto; right: 24px; }
+        .apropos-bottom-links { left: 12px; bottom: 12px; }
+    }
 </style>
 @endpush
 
@@ -590,6 +613,20 @@
     </section>
 
 </div>
+    <!-- Scroll to top button + bottom links -->
+    <button id="apropos-scroll-top" class="apropos-scroll-top" aria-label="Remonter">↑</button>
+    <footer class="apropos-bottom-links" aria-hidden="false">
+        <div class="bottom-left">
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Cookies</a>
+        </div>
+        <div class="bottom-right">
+            <a href="#" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
+            <a href="#" title="Twitter"><i class="bi bi-twitter"></i></a>
+            <a href="#" title="Instagram"><i class="bi bi-instagram"></i></a>
+        </div>
+    </footer>
 @endsection
 
 @push('scripts')
@@ -610,6 +647,15 @@ document.addEventListener('DOMContentLoaded', function () {
     }, { threshold: 0.12 });
 
     reveals.forEach(el => observer.observe(el));
+});
+</script>
+@endpush
+
+@push('scripts')
+<script>
+// Scroll to top behavior
+document.getElementById('apropos-scroll-top')?.addEventListener('click', function (){
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 });
 </script>
 @endpush
