@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>@yield('title', 'NovaTech Vision')</title>
+    <title>@yield('title', '')</title>
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -31,7 +31,7 @@
         .ntv-navbar {
             position: fixed;
             top:0; left:0; right:0;
-            z-index: 1000;
+            z-index: 1300;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -47,103 +47,102 @@
             border-bottom-color: var(--border);
         }
         .ntv-logo {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.05rem;
-            font-weight: 800;
-            color: var(--text);
-            text-decoration: none;
-        }
-        .ntv-logo:hover { color: var(--text); }
-        .ntv-logo .accent { color: var(--green); }
-
-        .ntv-nav-links {
             display: flex;
             align-items: center;
-            gap: 0.1rem;
-            list-style: none;
-            margin: 0; padding: 0;
+            gap: 0.65rem;
+            text-decoration: none;
         }
-        .ntv-nav-links a {
-            font-size: 0.71rem;
-            font-weight: 500;
+        .ntv-logo img {
+            height: 34px;
+            width: auto;
+            border-radius: 0;
+            object-fit: contain;
+            box-shadow: none;
+        }
+
+        .ntv-nav-links { display: none; }
+
+        /* Right side: top line, accueil and burger laid out */
+        .header-right { display:flex; flex-direction:column; align-items:flex-end; gap:10px; }
+        .header-line { width: 240px; height: 1.6px; background: rgba(255,255,255,0.7); opacity:0.6; border-radius:2px; }
+        .header-content { display:flex; align-items:center; gap:18px; }
+        .nav-home {
+            font-size: 0.72rem;
             color: var(--text-muted);
             text-decoration: none;
-            letter-spacing: 0.07em;
+            letter-spacing: 0.14em;
             text-transform: uppercase;
-            padding: 0.4rem 0.8rem;
-            border-radius: 2px;
-            transition: color 0.2s, background 0.2s;
+            margin-top: 6px;
+            padding-left: 6px;
+            transition: color 0.2s, transform 0.15s;
         }
-        .ntv-nav-links a:hover,
-        .ntv-nav-links a.active { color: var(--green); background: var(--green-glow); }
+        .nav-home.active, .nav-home:hover { color: var(--green); transform: translateY(-2px); }
 
         .ntv-nav-right {
             display: flex;
             align-items: center;
             gap: 1rem;
         }
-        .ntv-socials { display: flex; align-items: center; gap: 0.65rem; }
-        .ntv-socials a { color: var(--text-muted); font-size: 0.9rem; transition: color 0.2s; }
-        .ntv-socials a:hover { color: var(--green); }
-
-        .btn-nous-ecrire {
-            font-size: 0.68rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--green) !important;
-            text-decoration: none;
-            border: 1px solid var(--border);
-            padding: 0.4rem 0.95rem;
-            border-radius: 3px;
-            white-space: nowrap;
-            transition: background 0.2s, border-color 0.2s;
-        }
-        .btn-nous-ecrire:hover { background: var(--green-glow); border-color: var(--green); }
 
         .ntv-burger {
-            display: none;
+            display: block;
             background: none;
-            border: 1px solid var(--border);
+            border: 1px solid rgba(255,255,255,0.06);
             color: var(--text);
-            font-size: 1.1rem;
+            font-size: 1rem;
             cursor: pointer;
-            padding: 0.3rem 0.5rem;
-            border-radius: 3px;
-            transition: border-color 0.2s, color 0.2s;
+            padding: 0.35rem 0.6rem;
+            border-radius: 6px;
+            transition: border-color 0.15s, color 0.15s, transform 0.12s;
+            backdrop-filter: blur(6px);
         }
-        .ntv-burger:hover { border-color: var(--green); color: var(--green); }
+        .ntv-burger:hover { border-color: var(--green); color: var(--green); transform: translateY(-1px); }
 
-        /* Drawer */
+        /* Drawer (mobile full-height panel) */
         .ntv-drawer {
-            display: none;
+            display: flex;
             position: fixed;
-            inset: 0;
-            background: rgba(4,13,10,0.98);
-            z-index: 1100;
+            right: 24px;
+            top: 8vh;
+            height: 84vh;
+            width: 320px;
+            max-width: 92vw;
+            transform: translateX(120%);
+            transition: transform 320ms cubic-bezier(.2,.9,.2,1);
+            z-index: 1200;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 2rem;
+            padding: 2.4rem 1.8rem;
+            gap: 1.6rem;
+            background: #eef8f9;
+            color: #12233a;
+            box-shadow: 0 30px 80px rgba(6,20,30,0.28);
+            border-radius: 12px;
         }
-        .ntv-drawer.open { display: flex; }
-        .ntv-drawer a {
-            font-family: 'Syne', sans-serif;
-            font-size: 1.4rem;
-            font-weight: 700;
-            color: var(--text);
-            text-decoration: none;
-            transition: color 0.2s;
+        .ntv-drawer.open { transform: translateX(0); }
+        .ntv-drawer.exit-top { animation: ntv-exit-top 360ms ease-in forwards; }
+
+        @keyframes ntv-exit-top {
+            from { transform: translateX(0); opacity: 1; }
+            to   { transform: translateY(-120%); opacity: 0; }
         }
-        .ntv-drawer a:hover { color: var(--green); }
+
+        .ntv-drawer-top {
+            width:100%; display:flex; align-items:center; justify-content:space-between; gap:1rem;
+        }
         .ntv-drawer-close {
-            position: absolute;
-            top: 1.5rem; right: 2rem;
-            background: none; border: none;
-            color: var(--text-muted);
-            font-size: 1.4rem;
-            cursor: pointer;
+            background: none; border: none; color: #22424f; font-size: 0.78rem; letter-spacing: 0.12em; font-weight:700; cursor:pointer;
         }
+        .ntv-drawer-globe { color:#22424f; font-size:1.06rem; opacity:0.95 }
+
+        .ntv-drawer-links { display:flex; flex-direction:column; gap:1.8rem; margin-top:1.6rem; }
+        .ntv-drawer-links a { font-family:'Syne',sans-serif; font-size:1.28rem; font-weight:800; color:#3b5162; text-decoration:none; letter-spacing:0.12em; text-transform:uppercase; }
+        .ntv-drawer-links a.active { color:#0f2b4a; }
+
+        .ntv-drawer-socials { margin-top:2rem; display:flex; flex-direction:column; gap:0.6rem; color:#7b8b98; font-size:0.72rem; text-transform:uppercase; letter-spacing:0.12em; }
+        .ntv-drawer-socials a { color:inherit; text-decoration:none; }
+
+        .ntv-drawer-cta { margin-top:1.8rem; display:flex; justify-content:center; }
+        .btn-nous-ecrire-drawer { background: linear-gradient(90deg,#14153b 0%, #2e1f59 100%); color:#fff; padding:0.9rem 2.2rem; border-radius:28px; text-decoration:none; font-weight:800; letter-spacing:0.08em; box-shadow: 0 10px 30px rgba(20,20,60,0.22); }
 
         /* ── FOOTER ── */
         .ntv-footer {
@@ -178,63 +177,83 @@
 <body>
 
 <nav class="ntv-navbar" id="ntv-navbar">
-    <a href="{{ url('/') }}" class="ntv-logo">Nova<span class="accent">Tech</span> Vision</a>
+    <a href="{{ url('/') }}" class="ntv-logo">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo">
+    </a>
 
-    <ul class="ntv-nav-links">
-        <li><a href="{{ url('/') }}"               class="{{ request()->is('/') ? 'active' : '' }}">Accueil</a></li>
-        <li><a href="{{ url('/apropos') }}"         class="{{ request()->is('apropos') ? 'active' : '' }}">À Propos</a></li>
-        <li><a href="{{ url('/services') }}"        class="{{ request()->is('services') ? 'active' : '' }}">Services</a></li>
-        <li><a href="{{ url('/projets') }}"         class="{{ request()->is('projets') ? 'active' : '' }}">Projets</a></li>
-        <li><a href="{{ url('/recrutements') }}"    class="{{ request()->is('recrutements') ? 'active' : '' }}">Recrutements</a></li>
-        <li><a href="{{ url('/candidature') }}"     class="{{ request()->is('candidature') ? 'active' : '' }}">Candidature SP</a></li>
-    </ul>
-
-    <div class="ntv-nav-right">
-        <a href="{{ url('/contact') }}" class="btn-nous-ecrire">Nous écrire</a>
-        <div class="ntv-socials">
-            <a href="#" target="_blank" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
-            <a href="#" target="_blank" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
-            <a href="mailto:contact@novatechvision.com" aria-label="Email"><i class="bi bi-envelope"></i></a>
+    <div class="header-right">
+        <div class="header-line"></div>
+        <div class="header-content">
+            <a href="{{ url('/') }}" class="nav-home {{ request()->is('/') ? 'active' : '' }}">Accueil</a>
+            <div class="ntv-nav-right">
+                <button class="ntv-burger" id="ntv-burger"><i class="bi bi-grid-3x3-gap-fill"></i></button>
+            </div>
         </div>
-        <button class="ntv-burger" id="ntv-burger"><i class="bi bi-list"></i></button>
     </div>
 </nav>
 
-<div class="ntv-drawer" id="ntv-drawer">
-    <button class="ntv-drawer-close" id="ntv-drawer-close"><i class="bi bi-x-lg"></i></button>
-    <a href="{{ url('/') }}"             onclick="closeDrawer()">Accueil</a>
-    <a href="{{ url('/apropos') }}"      onclick="closeDrawer()">À Propos</a>
-    <a href="{{ url('/services') }}"     onclick="closeDrawer()">Services</a>
-    <a href="{{ url('/projets') }}"      onclick="closeDrawer()">Projets</a>
-    <a href="{{ url('/recrutements') }}" onclick="closeDrawer()">Recrutements</a>
-    <a href="{{ url('/candidature') }}"  onclick="closeDrawer()">Candidature SP</a>
-    <a href="{{ url('/contact') }}"      onclick="closeDrawer()">Nous écrire</a>
+<div class="ntv-drawer" id="ntv-drawer" aria-hidden="true">
+    <div class="ntv-drawer-top">
+        <button class="ntv-drawer-globe" aria-hidden="true"><i class="bi bi-globe"></i></button>
+        <button class="ntv-drawer-close" id="ntv-drawer-close">FERMER →</button>
+    </div>
+
+    <nav class="ntv-drawer-links" aria-label="Main menu">
+        <a href="{{ url('/') }}" onclick="closeDrawer()" class="{{ request()->is('/') ? 'active' : '' }}">Accueil</a>
+        <a href="{{ url('/apropos') }}" onclick="closeDrawer()" class="{{ request()->is('apropos') ? 'active' : '' }}">À Propos</a>
+        <a href="{{ url('/services') }}" onclick="closeDrawer()" class="{{ request()->is('services') ? 'active' : '' }}">Services</a>
+        <a href="{{ url('/projets') }}" onclick="closeDrawer()" class="{{ request()->is('projets') ? 'active' : '' }}">Projets</a>
+        <a href="{{ url('/recrutements') }}" onclick="closeDrawer()" class="{{ request()->is('recrutements') ? 'active' : '' }}">Recrutements</a>
+        <a href="{{ url('/candidature') }}" onclick="closeDrawer()" class="{{ request()->is('candidature') ? 'active' : '' }}">Candidature SP</a>
+    </nav>
+
+    <div class="ntv-drawer-socials">
+        <a href="#">Instagram</a>
+        <a href="#">LinkedIn</a>
+        <a href="mailto:contact@novatechvision.com">Email</a>
+    </div>
+
+    <div class="ntv-drawer-cta">
+        <a href="{{ url('/contact') }}" class="btn-nous-ecrire-drawer">Nous écrire</a>
+    </div>
 </div>
 
 @yield('content')
 
-<footer class="ntv-footer">
-    <div class="ntv-footer-logo">Nova<span class="accent">Tech</span> Vision</div>
-    <div class="ntv-footer-links">
-        <a href="#">Terms</a>
-        <a href="#">Privacy</a>
-        <a href="#">Cookies</a>
-    </div>
-    <div class="ntv-footer-copy">© {{ date('Y') }} NovaTech Vision. Tous droits réservés.</div>
-</footer>
+<!-- footer removed per request -->
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     window.addEventListener('scroll', () => {
         document.getElementById('ntv-navbar').classList.toggle('scrolled', window.scrollY > 40);
     });
-    document.getElementById('ntv-burger').addEventListener('click', () => {
-        document.getElementById('ntv-drawer').classList.add('open');
+    const drawer = document.getElementById('ntv-drawer');
+    const burger = document.getElementById('ntv-burger');
+    const drawerClose = document.getElementById('ntv-drawer-close');
+
+    burger.addEventListener('click', () => {
+        // ensure any exit animation classes removed
+        drawer.classList.remove('exit-top');
+        drawer.classList.add('open');
+        drawer.setAttribute('aria-hidden', 'false');
     });
-    document.getElementById('ntv-drawer-close').addEventListener('click', () => {
-        document.getElementById('ntv-drawer').classList.remove('open');
+
+    function doClose() {
+        // play exit-to-top animation then remove open state
+        drawer.classList.remove('open');
+        drawer.classList.add('exit-top');
+        drawer.setAttribute('aria-hidden', 'true');
+    }
+
+    drawerClose.addEventListener('click', () => doClose());
+    function closeDrawer() { doClose(); }
+
+    // when exit animation ends, clean up classes
+    drawer.addEventListener('animationend', (e) => {
+        if (e.animationName === 'ntv-exit-top') {
+            drawer.classList.remove('exit-top');
+        }
     });
-    function closeDrawer() { document.getElementById('ntv-drawer').classList.remove('open'); }
 </script>
 
 @stack('scripts')
